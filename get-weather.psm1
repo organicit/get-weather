@@ -1,4 +1,6 @@
-﻿function get-temperature {
+﻿$Global:apiRoot = "http://api.openweathermap.org/data/2.5/"
+
+function get-temperature {
 	<#
 		.SYNOPSIS
 			A brief description of the function.
@@ -34,8 +36,6 @@
 			about_comment_based_help
 
 	#>
-	[CmdletBinding()]
-	[OutputType([System.Int32])]
 	param(
 		[Parameter(Position=0, Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
@@ -51,7 +51,7 @@
 	}
 }
 
-function Find-City {
+function Get-City {
 	<#
 		.SYNOPSIS
 			Use the API to set the Proper City Code
@@ -91,9 +91,27 @@ function Find-City {
 		[System.String]
 		$CountryCode
 	)
+    $updName = $Name -replace " ","%20"
+    $url = $Global:apiRoot + "find?q=" + $updName
+    #Write-Host $url
 	try {
-		
-	}
+		$LUVals = Invoke-RestMethod -Uri $url
+            
+        if($LUVals.count -eq 1)
+        {
+            
+            return $LUVals.list.id
+
+        } else {
+            Write-Host "More than one City has been returned:"
+            foreach($City in $LUVals)
+            {
+                Write-Host $City.List.Name
+                write-host $City.List.sys
+            }
+        }
+
+  	}
 	catch {
 		throw
 	}
@@ -135,22 +153,33 @@ function Set-City {
 			about_comment_based_help
 
 	#>
-	[CmdletBinding()]
-	[OutputType([System.Int32])]
 	param(
 		[Parameter(Position=0, Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
 		[System.String]
-		$Name,
-
-		[Parameter(Position=1)]
-		[ValidateNotNull()]
-		[System.Int32]
-		$Index
+		$Name
 	)
+    
+    $updName = $Name -replace " ","%20"
+    $url = $Global:apiRoot + "find?q=" + $updName
+    #Write-Host $url
 	try {
-		
-	}
+		$LUVals = Invoke-RestMethod -Uri $url
+            
+        if($LUVals.count -eq 1)
+        {
+            
+            return $LUVals.list.id
+
+        } else {
+            Write-Host "More than one City has been returned:"
+            foreach($City in $LUVals)
+            {
+                Write-Host $City.List.Name + ": " + $City.List.sys
+            }
+        }
+
+  	}
 	catch {
 		throw
 	}
