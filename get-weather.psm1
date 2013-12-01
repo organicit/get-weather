@@ -1,5 +1,6 @@
 ﻿$Global:apiRoot = "http://api.openweathermap.org/data/2.5/"
 
+
 function get-temperature {
 	<#
 		.SYNOPSIS
@@ -39,12 +40,15 @@ function get-temperature {
 	param(
 		[Parameter(Position=0, Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[System.String]
-		$CityCode
+		$CityCode,
+        $Units
 	)
 	try {
-		 $url = "http://api.openweathermap.org/data/2.5/forecast?id=$CityCode"
-		 Invoke-RestMethod -Uri $url
+		 $url = $apiRoot + "weather?id=" + $CityCode
+		 $reqRetVal = Invoke-RestMethod -Uri $url
+         if($Units){
+            
+         }
 	}
 	catch {
 		throw
@@ -80,7 +84,7 @@ function Get-City {
 	#>
 	param($CityName)
     
-    $CQuery = Invoke-RestMethod -uri "http://api.openweathermap.org/data/2.5/find?q=$CityName"
+    $CQuery = Invoke-RestMethod -uri $apiRoot"find?q="$CityName
 
     #$a = @{}
 
@@ -120,4 +124,21 @@ function Get-City {
             } 
             Write-Output $array
 
+}
+
+function get-forcast ($param1, $param2)
+{
+    
+}
+
+function convertto-Farenheit ($param1)
+{
+    [int]$farenheit = (($param1 - 273) * 1.8) + 32
+    return $farenheit
+}
+
+function convertto-Centigrade ($param1)
+{
+    [int]$Centigrade = $param1 - 273
+    return $Centigrade
 }
