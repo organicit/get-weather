@@ -78,8 +78,6 @@ function Get-City {
 			System.Int32
 		
 	#>
-	[CmdletBinding()]
-	[OutputType([System.Int32])]
 	param($CityName)
     
     $CQuery = Invoke-RestMethod -uri "http://api.openweathermap.org/data/2.5/find?q=$CityName"
