@@ -41,13 +41,22 @@ function get-temperature {
 		[Parameter(Position=0, Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
 		$CityCode,
+        [Parameter(Position=1)]
         $Units
 	)
 	try {
 		 $url = $apiRoot + "weather?id=" + $CityCode
 		 $reqRetVal = Invoke-RestMethod -Uri $url
          if($Units){
-            
+            if($Units.toUpper()-eq "C"){
+                $val = convertto-centigrade $reqRetVal.main.temp
+                return $val
+            }elseif($Units.toUpper() -eq "F"){
+                $val = convertto-Farenheit $reqRetVal.main.temp
+                return $val
+            }else{
+                Write-Host "Invalid Parameter for Unit. Please enter C or F for valid conversion"
+            }
          }
 	}
 	catch {
