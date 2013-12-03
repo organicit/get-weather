@@ -57,6 +57,9 @@ function get-temperature {
             }else{
                 Write-Host "Invalid Parameter for Unit. Please enter C or F for valid conversion"
             }
+         }else{
+                $val = convertto-centigrade $reqRetVal.main.temp
+                return $val
          }
 	}
 	catch {
