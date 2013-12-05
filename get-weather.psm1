@@ -9,17 +9,17 @@ function get-temperature {
 		.DESCRIPTION
 			A detailed description of the function.
 
-		.PARAMETER  ParameterA
-			The description of the ParameterA parameter.
+		.PARAMETER  CityCode
+			Country weather code obtained via Get-City function
 
-		.PARAMETER  ParameterB
+		.PARAMETER  Units
 			The description of the ParameterB parameter.
 
 		.EXAMPLE
-			PS C:\> Get-Something -ParameterA 'One value' -ParameterB 32
+			PS C:\> get-temperature -CityCode 5349705
 
 		.EXAMPLE
-			PS C:\> Get-Something 'One value' 32
+			PS C:\> Get-Temperature -CityCode 5349705 -Units F
 
 		.INPUTS
 			System.String,System.Int32
@@ -30,11 +30,6 @@ function get-temperature {
 		.NOTES
 			Additional information about the function go here.
 
-		.LINK
-			about_functions_advanced
-
-		.LINK
-			about_comment_based_help
 
 	#>
 	param(
@@ -70,28 +65,19 @@ function get-temperature {
 function Get-City {
 	<#
 		.SYNOPSIS
-			Use the API to set the Proper City Code
+			Use the API to set the Proper City Code for the module
 
 		.DESCRIPTION
 			The API uses City Weather codes so you will need to lookup your city and verify it's location and select the appropriate code.
 
-		.PARAMETER  ParameterA
-			City
-
-		.PARAMETER  ParameterB
-			CountryCode
+		.PARAMETER  
+            CityName
 
 		.EXAMPLE
-			Find-City -City "San Francisco" -CountryCode "US"
+			Find-City -City "San Francisco"
 
 		.EXAMPLE
 			find-City "New York"
-
-		.INPUTS
-			System.String,System.String
-
-		.OUTPUTS
-			System.Int32
 		
 	#>
 	param($CityName)
